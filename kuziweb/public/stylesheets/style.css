@@ -1,8 +1,75 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/*Elements of website*/
+/*Data edit sidebar*/
+#data{
+	width:25%;
+	position: absolute;
+	display:inline-block;
+	margin-right:20px;
+	padding-left:20px;
+	z-index:1;
+	height: 500px;
+	background:rgba(255,255,255,.8);
 }
 
-a {
-  color: #00B7FF;
+/*Map container*/
+.map {
+	height: 500px;
+	width: 100%;
+	display:inline-block;
+	position: absolute;
+	z-index:0;
+}
+/*Right layers sidebar*/
+#layers{
+	width: 15%;
+	position: relative;
+	z-index:1;
+	height: 500px;
+	background:rgba(255,255,255,.9);
+	padding-left:20px
+}
+#layers input:after{
+	line-height:25px;
+}
+
+/* General element styles*/
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.right{
+	float:right;
+}
+
+form.left{
+	display: inline-block;
+	float: left
+}
+
+label{
+	   cursor: pointer;
+}
+
+button,li>a,input[type=submit],input[type=checkbox]{
+	text-decoration: none;
+	font-size: 11px;
+   background-color: rgba(65,105,225,.9) ;
+   border: none;
+   color: white;
+   padding: 10px 25px;
+   text-align: center;
+   text-decoration: none;
+   border-radius:2px;
+   display: inline-block;
+   margin: 4px 2px;
+   cursor: pointer;
+}
+
+table{
+	border-spacing: 10px;
+}
+
+.center {
+    width: 20%;
+    margin: 0 auto; 
 }
