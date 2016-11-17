@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
+	<link rel="stylesheet" href="style.css" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<script>
+function myFunction() {
+    var r = confirm("Are you sure?");
+    if (r == true) {
+    	x = "Thank you, your request has been received.";
+  		alert(x)
+	}
+
+}
+
+</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+
+$(document).ready(function(){
+
+	$("#layers").hide();
+	$("#data").hide();
+    $("#hide").click(function(){
+        $("#layers").toggle(400);
+    });
+	$("#add,#edit").click(function(){
+        $("#data").toggle(400);
+       	$('.date').datepicker();
+    });
+});
+</script>
+    <script src="https://openlayers.org/en/v3.19.1/build/ol.js" type="text/javascript"></script>
+    <title>Login</title>
+  </head>
+  <body>
+<div id="title">
+	<a href="./Login.html"><img src="./Logo.jpg"/></a>
+	<h2>Carte</h2>	
+</div>
+<hr>
+<br>
+<div id="login" class="center">
+	<form action="Options.html">
+	<table>
+	<tr>
+ 	 <td>Username: </td><td><input type="text" name="fname"></td>
+ 	 </tr>
+ 	 <tr>
+	  <td>Password: </td><td><input type="password" name="lname"></td>
+	  </tr>
+	   	 <tr>
+	  <td>  <input type="submit" value="Submit"> </td><td></td></td>
+	  </tr>
+	</table><br>
+</form>
+</div>
+  </body>
+</html>
