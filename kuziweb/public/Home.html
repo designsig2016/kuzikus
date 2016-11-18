@@ -91,8 +91,8 @@ $(document).ready(function(){
         layers: [raster, vector],
         target: 'map',
         view: new ol.View({
-          center: [-11000000, 4600000],
-          zoom: 4
+          center: ol.proj.fromLonLat([18.39,-23.23]),
+          zoom: 8
         })
       });
 
