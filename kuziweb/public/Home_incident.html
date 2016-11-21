@@ -132,7 +132,7 @@
   <body>
 
 <div id="title">
-	<a href="./index.html"><img src="./Logo.jpg"/></a><h2>Carte</h2>
+	<a href="./index.html"><img src="images/Logo.jpg"/></a><h2>Carte</h2>
 	<hr>
 	<form class="left" action="./map_couche2.html">
 		<input type="submit" value="Add" />
@@ -319,7 +319,7 @@
           }),
           new ol.layer.Vector({
             source : new ol.source.Vector({
-              url:'roads.geojson',
+              url:'layers/roads.geojson',
               format:new ol.format.GeoJSON({
                 defaultDataProjection:'EPSG:32734',
                 featureProjection:'EPSG:32734'
@@ -328,7 +328,7 @@
           }),
           new ol.layer.Vector({
             source : new ol.source.Vector({
-              url:'buildings.geojson',
+              url:'layers/buildings.geojson',
               format:new ol.format.GeoJSON({
                 defaultDataProjection:'EPSG:32734',
                 featureProjection:'EPSG:32734'
