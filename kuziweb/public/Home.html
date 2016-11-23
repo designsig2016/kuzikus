@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+ <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 	<link rel="stylesheet" href="./stylesheets/style.css" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <script>
@@ -75,29 +76,45 @@ $(document).ready(function(){
 		<input type="submit" value="Save" id="save"></input>
 	</form>
 </div>
+<script type="text/javascript">
+    alert(document.getElementById("fire").checked);
+</script>
 <div id="map" class="map">  </div>
     <script>
+    // Vector layer from a GeoJson file url
+	var gjsonFile = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: 'layers/burned_areas.geojson',
+                    projection: 'EPSG:3857'
+                }) 
+            });
+  	 	var gjsonFile2 = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: 'layers/boreholes.geojson',
+                    projection: 'EPSG:3857'
+                }) 
+            });
+
       var raster = new ol.layer.Tile({
         source: new ol.source.OSM()
       });
-
       var source = new ol.source.Vector({wrapX: false});
-
       var vector = new ol.layer.Vector({
         source: source
       });
-
       var map = new ol.Map({
-        layers: [raster, vector],
+        layers: [raster, vector,gjsonFile,gjsonFile2],
         target: 'map',
         view: new ol.View({
           center: ol.proj.fromLonLat([18.39,-23.23]),
-          zoom: 8
+          zoom: 12
         })
       });
-
+      zoomslider = new ol.control.ZoomSlider();
+      map.addControl(zoomslider);
       var typeSelect = document.getElementById('type');
-
       var draw; // global so we can remove it later
       function addInteraction() {
         var value = typeSelect.value;
@@ -109,8 +126,6 @@ $(document).ready(function(){
           map.addInteraction(draw);
         }
       }
-
-
       /**
        * Handle change event.
        */
@@ -118,8 +133,8 @@ $(document).ready(function(){
         map.removeInteraction(draw);
         addInteraction();
       };
-
       addInteraction();
+      
     </script>
     
 	<div id="layers" class="right">
@@ -131,10 +146,11 @@ $(document).ready(function(){
 	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Flora</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Herds</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Structures</label><br></td></tr>
-	<tr><td><label><input type="checkbox" checked name="vehicle" value="RareAnimal">Fires</label><br></td></tr>
+	<tr><td><label><input type="checkbox" checked name="fire" id="fire" value="RareAnimal">Fires</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Bush Encroachment</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Wood Resources</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="vehicle" value="RareAnimal">Incident</label><br></td></tr>
+	<tr><td><label><input type="checkbox" name="incidents" value="RareAnim
+	al">Incidents</label><br></td></tr>
 	</table>
 
   </div>
