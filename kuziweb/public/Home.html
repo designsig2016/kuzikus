@@ -104,21 +104,26 @@ Debugging: <div id="test">Test</div>-->
       
     // Vector layer from a GeoJson file url
 	var boreholes = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    format: new ol.format.GeoJSON(),
-                    url: 'layers/boreholes.geojson',
-                    projection: 'EPSG:3857'
-                }),
-               
-            });
+		source: new ol.source.Vector({
+			format: new ol.format.GeoJSON(),
+			url: 'layers/boreholes.geojson',
+			projection: 'EPSG:3857'
+		}),
+	});
 	var fire = new ol.layer.Vector({
-			source: new ol.source.Vector({
-				format: new ol.format.GeoJSON(),
-				url: 'layers/burned_areas.geojson',
-				projection: 'EPSG:3857'
-			}),
-		   
-		});
+		source: new ol.source.Vector({
+			format: new ol.format.GeoJSON(),
+			url: 'layers/burned_areas.geojson',
+			projection: 'EPSG:3857'
+		}),
+	});
+	var roads = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			format: new ol.format.GeoJSON(),
+			url: 'layers/roads.geojson',
+			projection: 'EPSG:3857'
+		}),
+	});
             
       var raster = new ol.layer.Tile({
 	    preload: 4,
@@ -133,7 +138,7 @@ Debugging: <div id="test">Test</div>-->
       var lrs = [];
     lrs.push(raster);
     lrs.push(vector);	
-    
+    lrs.push(roads);	
    
 	// MAP
 	var view = new ol.View({
@@ -173,6 +178,7 @@ Debugging: <div id="test">Test</div>-->
 		lrs = []; // reinitialize layers, we don't want to add new ones every time
     	lrs.push(raster);
 	    lrs.push(vector);
+		lrs.push(roads);	
 	    var text = [];
 	    for(i=0;i<checked.length;i++){
 			switch(checked[i].toString()){// add checked layers to map
@@ -317,17 +323,16 @@ Debugging: <div id="test">Test</div>-->
 	<table>
 	<tr>
 	<td>
-	<tr><td><label><input type="checkbox" name="rareanimals" class="layers" value="RareAnimal">Rare animals</label><br></td></tr>
+	<tr><td><label onclick="addLayers()"><input type="checkbox" name="rareanimals" class="layers" value="RareAnimal">Rare animals</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="flora" class="layers" value="RareAnimal">Flora</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="herds" class="layers" value="RareAnimal">Herds</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="boreholes" class="layers" value="Borehole"><b>Boreholes</b></label><br></td></tr>
+	<tr><td><label onclick="addLayers()"><input type="checkbox" name="boreholes" class="layers" value="Borehole"><b>Boreholes</b></label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="structures" class="layers" value="RareAnimal">Structures</label><br></td></tr>
-	<tr><td><label><input type="checkbox" checked name="fire" class="layers" value="RareAnimal"><b>Fires</b></label><br></td></tr>
+	<tr><td><label onclick="addLayers()"><input type="checkbox" name="fire" class="layers" value="RareAnimal"><b>Fires</b></label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="bush" class="layers" value="RareAnimal">Bush Encroachment</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="wood" class="layers" value="RareAnimal">Wood Resources</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="incidents" class="layers" value="RareAnimal">Incidents</label><br></td></tr>
 	</table>
-	<button onclick="addLayers()">Submit</button>
   </div>
   <!--EASTER EGG-->
   	<button id="fly-to-bern"><i class="fa fa-plane" aria-hidden="true"></i> Fly to Bern</button>
