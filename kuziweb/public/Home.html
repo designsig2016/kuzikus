@@ -1,46 +1,52 @@
 <!doctype html>
 <html lang="en">
   <head>
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 	<link rel="stylesheet" href="./stylesheets/style.css" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-<script>
-function myFunction() {
-    var r = confirm("Are you sure?");
-    if (r == true) {
-    	x = "Thank you, your request has been received.";
-  		alert(x)
-	}
+	<script>
+		function myFunction() {
+			var r = confirm("Are you sure?");
+			if (r == true) {
+				x = "Thank you, your request has been received.";
+				alert(x)
+			}
 
-}
-</script>
+		}
+	</script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
 
-$(document).ready(function(){
-
-	//$("#layers").hide();
-	$("#data").hide();
-    $("#hide").click(function(){
-        $("#layers").toggle(400);
-    });
-	$("#add,#edit").click(function(){
-        $("#data").toggle(400);
-       	$('.date').datepicker();
-    });
-});
-</script>
+	$(document).ready(function(){
+		//$("#layers").hide();
+		$("#data").hide();
+		$('#fly-to-bern').hide()
+		$("#hide").click(function(){
+			$("#layers").toggle(400);
+		});
+		$("#add,#edit").click(function(){
+			$("#data").toggle(400);
+			$('.date').datepicker();
+		});
+		$('input').keyup(function () {
+   		 	if (this.value=="EasterEgg") $('#fly-to-bern').show(400)
+    		else $('#fly-to-bern').hide()
+		});	
+	});
+	</script>
     <script src="https://openlayers.org/en/v3.19.1/build/ol.js"></script>
     <title>OpenLayers 3 Map</title>
-  </head>
-  <body>
+ </head>
+ <body>
 <!--BUTTONS-->
 <div id="title">
-	<a href="#"><img src="./images/Logo.jpg"/></a><h2>Carte</h2>
+	<a href="#"><img src="./images/Logo.jpg" alt="Kuzikus Logo"/></a><h2>Carte</h2>
 	<hr>
 	<button class="left" id="add"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
 	<button class="left" id="edit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
 	<button class="left" id="delete" onclick="myFunction()"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+  	<button class="right" id="fly-to-bern"><i class="fa fa-plane" aria-hidden="true"></i> Fly to Bern</button>	<!--EASTER EGG: Type "EasterEgg" in any input box to show the button-->
 	<button class="right" id="hide"><i class="fa fa-map" aria-hidden="true"></i> Layers</button>	
 </div>
 <br>
@@ -64,16 +70,16 @@ Debugging: <div id="test">Test</div>-->
 		  <tr>
 			<td><i class="fa fa-calendar"></i></td>
 			<td>Start date</td>
-			<td><input type="date" class="date startdate" /></td>
+			<td><input type="date"/></td>
 		  </tr>
 		  <tr>
 			<td><i class="fa fa-calendar"></i></td>
 			<td>End date</td>
-			<td><input type="date" class="date enddate" /></td>
+			<td><input type="date"/></td>
 		  </tr>
 		</table>
 		<br>      
-		<input type="submit" value="Save" id="save"></input>
+		<input type="submit" value="Save" id="save">
 	</form>
 </div>
 
@@ -321,20 +327,16 @@ Debugging: <div id="test">Test</div>-->
 	<div id="layers" class="right">
 	<h4><i class="fa fa-map" aria-hidden="true"></i> Layers</h4>
 	<table>
-	<tr>
-	<td>
-	<tr><td><label onclick="addLayers()"><input type="checkbox" name="rareanimals" class="layers" value="RareAnimal">Rare animals</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="flora" class="layers" value="RareAnimal">Flora</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="herds" class="layers" value="RareAnimal">Herds</label><br></td></tr>
-	<tr><td><label onclick="addLayers()"><input type="checkbox" name="boreholes" class="layers" value="Borehole"><b>Boreholes</b></label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="structures" class="layers" value="RareAnimal">Structures</label><br></td></tr>
-	<tr><td><label onclick="addLayers()"><input type="checkbox" name="fire" class="layers" value="RareAnimal"><b>Fires</b></label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="bush" class="layers" value="RareAnimal">Bush Encroachment</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="wood" class="layers" value="RareAnimal">Wood Resources</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="incidents" class="layers" value="RareAnimal">Incidents</label><br></td></tr>
+		<tr><td><label onclick="addLayers()"><input type="checkbox" name="rareanimals" class="layers" value="RareAnimal">Rare animals</label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="flora" class="layers" value="RareAnimal">Flora</label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="herds" class="layers" value="RareAnimal">Herds</label><br></td></tr>
+		<tr><td><label onclick="addLayers()"><input type="checkbox" name="boreholes" class="layers" value="Borehole"><b>Boreholes</b></label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="structures" class="layers" value="RareAnimal">Structures</label><br></td></tr>
+		<tr><td><label onclick="addLayers()"><input type="checkbox" name="fire" class="layers" value="RareAnimal"><b>Fires</b></label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="bush" class="layers" value="RareAnimal">Bush Encroachment</label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="wood" class="layers" value="RareAnimal">Wood Resources</label><br></td></tr>
+		<tr><td><label><input type="checkbox" name="incidents" class="layers" value="RareAnimal">Incidents</label><br></td></tr>
 	</table>
   </div>
-  <!--EASTER EGG-->
-  	<button id="fly-to-bern"><i class="fa fa-plane" aria-hidden="true"></i> Fly to Bern</button>
   </body>
 </html>
