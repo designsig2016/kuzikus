@@ -44,8 +44,8 @@ $(document).ready(function(){
 	<button class="right" id="hide"><i class="fa fa-map" aria-hidden="true"></i> Layers</button>	
 </div>
 <br>
-<!--EDIT MENU-->
-<div id="test">Test</div>
+<!--EDIT MENU
+Debugging: <div id="test">Test</div>-->
 <div id="data">
 	<h4><i class="fa fa-fire" aria-hidden="true"></i> Forest fire</h4>
 	<form class="form-inline">
@@ -172,18 +172,21 @@ $(document).ready(function(){
 		}
 		lrs = []; // reinitialize layers, we don't want to add new ones every time
     	lrs.push(raster);
-	    lrs.push(vector);	
-	    switch(checked.toString()){// add checked layers to map
-	    	case "boreholes":
-	    		lrs.push(boreholes);
-	    		break;
-	    	case "fire":
-	    	    lrs.push(fire);	    	
-	    	    break;
-	    	default:
-	    		checked.push("nothing");
-	    }
-		document.getElementById("test").innerHTML = "Selected Layers: "+checked.toString()+" (number of layers:"+lrs.length+")";
+	    lrs.push(vector);
+	    var text = [];
+	    for(i=0;i<checked.length;i++){
+			switch(checked[i].toString()){// add checked layers to map
+				case "boreholes":
+					lrs.push(boreholes);
+					break;
+				case "fire":
+					lrs.push(fire);	
+					break;
+				default:
+					text.push("did nothing");
+			}
+		}
+		// debugging: document.getElementById("test").innerHTML = "Selected Layers: "+checked.toString()+" (number of layers:"+lrs.length+")";
 	    lrs[1].setMap(map);
 	    for(i=0;i<lrs.length;i++){ // show all selected layers on the map
 	    	lrs[i].setMap(map);
@@ -317,9 +320,9 @@ $(document).ready(function(){
 	<tr><td><label><input type="checkbox" name="rareanimals" class="layers" value="RareAnimal">Rare animals</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="flora" class="layers" value="RareAnimal">Flora</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="herds" class="layers" value="RareAnimal">Herds</label><br></td></tr>
-	<tr><td><label><input type="checkbox" name="boreholes" class="layers" value="Borehole">Boreholes</label><br></td></tr>
+	<tr><td><label><input type="checkbox" name="boreholes" class="layers" value="Borehole"><b>Boreholes</b></label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="structures" class="layers" value="RareAnimal">Structures</label><br></td></tr>
-	<tr><td><label><input type="checkbox" checked name="fire" class="layers" value="RareAnimal">Fires</label><br></td></tr>
+	<tr><td><label><input type="checkbox" checked name="fire" class="layers" value="RareAnimal"><b>Fires</b></label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="bush" class="layers" value="RareAnimal">Bush Encroachment</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="wood" class="layers" value="RareAnimal">Wood Resources</label><br></td></tr>
 	<tr><td><label><input type="checkbox" name="incidents" class="layers" value="RareAnimal">Incidents</label><br></td></tr>
