@@ -1,0 +1,35 @@
+
+    #data{
+      clear: both;
+      display:inline-block;
+      width:25%;
+      float:left;
+      margin-right:20px;
+      height: 500px;
+    }
+    .map {
+      height: 500px;
+      width: 70%;
+      display:inline-block;
+      position: absolute;
+      float:left;
+      z-index:0;
+    }
+    .right{
+     float:right;
+   }
+   form.left{
+    display: inline-block;
+    float: left
+  }
+  .layers{
+   width: 15%;
+   position: relative;
+   float:right;
+   z-index:1;
+   height: 500px;
+   background:rgba(255,255,255,.8)
+ }
+ a{
+   text-decoration: none;
+ }
