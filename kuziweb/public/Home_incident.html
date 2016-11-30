@@ -1,184 +1,133 @@
 <!doctype html>
 <html lang="en">
-  <head>
+    <head>
 
-    <title>Kuzikus - Incident observation</title>
+        <title>Kuzikus - Incident observation</title>
 
-    <link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="stylesheets/Home_incident.css">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    
-    <script type="text/javascript" src="javascripts/Home_incident.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4-src.js"></script>
-    <script src="https://openlayers.org/en/v3.19.1/build/ol.js" type="text/javascript"></script>
-    
-  </head>
+        <link rel="stylesheet" href="https://openlayers.org/en/v3.19.1/css/ol.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/Home_incident.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        
 
-  <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4-src.js"></script>
+        <script src="https://openlayers.org/en/v3.19.1/build/ol.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="javascripts/Home_incident.js"></script>
 
-<div id="title">
-	<a href="./index.html"><img src="images/Logo.jpg"/></a><h2>Carte</h2>
-	<hr>
-	<form class="left" action="./map_couche2.html">
-		<input type="submit" value="Add" />
-	</form>
-	<form class="left" action="./map_couche2.html">
-		<input type="submit" value="Edit" />
-	</form>
-	<form class="left" action="./map_couche2.html">
-		<input type="submit" value="Delete" />
-	</form>
-	<button class="right" id="hide">Layers</button>
-</div>
+    </head>
+    <body>
+        <div id="title">
+            <a href="./index.html"><img src="images/Logo.jpg"/></a>
+            <h2>Carte</h2>
+        </div>
 
-	<br>
-	<br>
+        <div id="button_div">
+            <button id="addButton">Add</button>
+            <button id="modButton">Modify</button>
+        </div>
 
-<div id="data">
-  
-  <h3>Incidents</h3>
+        <div id="map_evt">
+        <div id="map"></div>
+        
+        <div class="span6">
+          <form>
+            <label>Projection </label>
+            <select id="projection">
+              <option value="EPSG:32734">EPSG:32734</option>
+            </select>
+          </form>
+          <div id="mouse-position">&nbsp;</div>
+        </div> 
 
-  <div id="inc_form">
+        <div id="form">
+            <div class="container">
+                <label for="type_inc">Incident type</label>
+                <select id="type_inc" name = "type_inc" size=1 onchange="showDiv(this)" >
+                  <option selected value="inc_dead">Dead species</option>
+                  <option value="inc_fence">Fence incident</option>
+                </select>
+                <hr>
+            </div>
+            <div id="form_dead">
+                <div class="container">
+                  <label>ID</label>
+                  <input id="IDinput" type="text"></input>
+                </div>
+                <div class="container">
+                  <label>X Coordinate</label>
+                  <input class="Xinput" type="number"></input>
+                </div>
+                <div class="container">
+                  <label>Y Coordinate</label>
+                  <input class="Yinput" type="number"></input>
+                </div>
+                <div class="container">
+                  <label>Species</label>
+                  <select id="speciesinput" size=1 >
+                    <option selected>Rhinoceros</option>
+                    <option>Giraffe</option>
+                    <option>Zebra</option>
+                    <option>...</option>
+                  </select>
+                </div>
+                <div class="container">
+                  <label for="male">Male</label>
+                  <input type="radio" name="gender" value="male" checked>
+                  <label for="female">Female</label>
+                  <input type="radio" name="gender" value="female">
+                </div>
+                <div class="container">
+                  <label for="dateinput">Date of observation:</label>
+                  <input type="text" class="dateinput"></input>
+                </div> 
+                <div class="container">
+                  <label>Comment</label>
+                  <textarea class="commentinput" placeholder="Enter your comment here"></textarea>
+                </div>
+                <div class="container">
+                  <label>Picture</label>
+                  <input type="file"></input>
+                </div>
+                <div class="container">
+                  <input id="cancelBtn" type="button" value="Cancel"></input>
+                  <input id="saveBtn" type="button" value="Save"></input>
+                </div>
+            </div>
 
+            <div id="form_fence">
+                <div class="container">
+                    <label for="inc_fence_type">Select from the list: </label>
+                      <select id="inc_fence_type">
+                        <option>Damage</option>
+                        <option>Hole</option>
+                        <option>Other</option>
+                      </select>
+                </div>
+                <div class="container">
+                  <label>X Coordinate</label>
+                  <input class="Xinput" type="number"></input>
+                </div>
+                <div class="container">
+                  <label>Y Coordinate</label>
+                  <input class="Yinput" type="number"></input>
+                </div>
+                <div class="container">
+                    <label for="dateinput">Date of observation:</label>
+                  <input type="text" class="dateinput"></input>
+                </div>
+                <div class="container">
+                  <label>Comment</label>
+                  <textarea class="commentinput" placeholder="Enter your comment here"></textarea>
+                </div>
+                <div class="container">
+                  <label>Picture</label>
+                  <input type="file"></input>
+                </div>
+            </div>
+        </div>
 
-    <label for="type_inc">Incident type</label>
-    <select id="type_inc" name = "type_inc" size=1 onchange="showDiv(this)" >
-      <option value="inc_dead">Dead species</option>
-      <option value="inc_fence">Fence incident</option>
-    </select>
-    <hr>
+        </div>
 
-  <div id="inc_dead_div">
-
-  <div>
-  <label for="type_species">Species: </label>
-  <select id="type_species" name = "type_species" size=1 >
-      <option>Rhinoceros</option>
-      <option>Giraffe</option>
-      <option>Zebra</option>
-      <option>...</option>
-    </select>
-  </div>
-  
-  <div>
-    <form>
-      <label for="age">Age: </label>
-      <input type="number" id="age_species" name="age" size=4 min="0" value="0" />
-    </form>
-  </div>
-
-   <div>
-    <form id="sex">
-      Sex :
-      <label for="male">Male</label>
-      <input type="radio" name="gender" value="male" checked>
-      <label for="female">Female</label>
-      <input type="radio" name="gender" value="female">
-    </form>
-    
-  </div>
-
-  <div>
-
-    <label for="date_obs">Date of observation: </label>
-    <input type="text" class="date_obs">
-
-  </div>
-
-
-  <div>
-    <label for="comment">Comment: </label><br>
-    <textarea name="comment" class="comment" placeholder="Enter your comment here"></textarea>
-  </div>
-
-  <div>
-    <label for="picture_list">Pictures: </label><br>
-    <select class="picture_list" size="3">
-      <option>Item one</option>
-      <option>Item two</option>
-      <option>Item three</option>
-      <option>Item four</option>
-    </select>
-    <br>
-    <button type="button">Remove</button>
-    <button type="button">Add</button>
-  </div>
-
-<hr>
-  <div id="validation_form">
-    <button type="button">Cancel</button>
-    <button type="button">Save</button>
-  </div>
-
-</div>
-
-  <div id="inc_fence_div">
-    <div>
-
-      <label for="inc_fence_type">Select from the list: </label>
-      <select id="inc_fence_type">
-        <option>Damage</option>
-        <option>Hole</option>
-        <option>Other</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="date_obs">Date of observation:</label>
-      <input type="text" class="date_obs">
-    </div>  
-
-    <div>
-      <label for="comment">Comment: </label><br>
-      <textarea name="comment" class="comment" placeholder="Enter your comment here"></textarea>
-    </div>
-
-    <div>
-      <label for="picture_list">Pictures: </label><br>
-      <select class="picture_list" size="3">
-        <option>Item one</option>
-        <option>Item two</option>
-        <option>Item three</option>
-        <option>Item four</option>
-      </select>
-      <br>
-      <button type="button">Remove</button>
-      <button type="button">Add</button>
-    </div>
-    <hr>
-
-    <div id="validation_form">
-     <button type="button">Cancel</button>
-     <button type="button">Save</button>
-    </div>
-
-  </div>
-    
-</div>
-</div>
-
-<div id="map" class="map">
-
-<div class="span6">
-  <form>
-    <label>Projection </label>
-    <select id="projection">
-      <option value="EPSG:32734">EPSG:32734</option>
-    </select>
-  </form>
-</div>
-<div class="span6" id="mouse-position">&nbsp;</div>
-
-</div>
-
-	<div class="layers layers-fac">
-		<ul>
-		<li><a href="">Plantes</a></li>
-		<li><a href="">Plantes</a></li>
-		</ul>
-  </div>
-
-  </body>
+    </body>
 </html>
