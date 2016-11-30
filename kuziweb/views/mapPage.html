@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="http://openlayers.org/en/v3.5.0/build/ol.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="./javascripts/mapPage.js"></script>
+        <link rel="stylesheet" href="./stylesheets/mapPage.css" type="text/css">
+
+        <script type="text/javascript" src="./javascripts/obs1.js"></script>
+
+        <script type="text/javascript" src="./javascripts/superagent.js"></script>
+        <script type="text/javascript" src="./javascripts/ol3-popup.js"></script>
+        <link rel="stylesheet" href="./stylesheets/ol3-popup.css" type="text/css">
+        <title>mapPage</title>
+    </head>
+    <body>
+    
+        <div id="map" class="map">
+        </div>
+
+        <button id="addButton">Add</button>
+        <button id="modButton">Modifiy</button>      
+
+        <div id="legend">
+            <input id="legend-buildings" class="toggleButton" type="checkbox" />
+            <label for="legend-buildings" ></label>
+            <input id="legend-roads" class="toggleButton" type="checkbox" />
+            <label for="legend-roads" ></label>
+            <input id="legend-fences" class="toggleButton" type="checkbox" />
+            <label for="legend-fences" ></label>
+        </div>
+
+        <div id="form">
+            <div id="IDc" class="container">
+                <label>ID</label>
+                <input id="IDinput" type="text"></input>
+            </div>
+            <div id="Xc" class="container">
+                <label>Coordonnée X</label>
+                <input id="Xinput" type="text"></input>
+            </div>
+            <div id="Yc" class="container">
+                <label>Coordonnée Y</label>
+                <input id="Yinput" type="text"></input>
+            </div>
+            <div id="Nomc" class="container">
+                <label>Nom</label>
+                <input  id="nameinput" type="text" ></input>
+            </div>
+            <div id="Comc" class="container">
+                <label >Comment</label>
+                <input id="commentinput" type="text"></input>
+            </div>
+            <div id="Addc" class="container">
+                <label >Added</label>
+                <input id="dateinput" type="date"></input>
+            </div>
+            <div id="Phoc" class="container">
+                <label>Photo</label>
+                <input  id="PhotoId" type="text" style="display:none"></input>
+                <div style="min-height: 200px; border: solid 1px lightgrey">
+                    <img  id="imgElement" src="" width=280px>
+                </div>
+                <input id="fileinput" type="file" enctype='multipart/form-data' onchange="onFileSelected(event)"></input>
+            </div>
+            <div class="container">
+                <input id="cancelBtn" type="button" value="Cancel"></input>
+                <input id="saveBtn" type="button" value="Save"></input>
+            </div>
+        </div>
+
+    </body>
+</html>
