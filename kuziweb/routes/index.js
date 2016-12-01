@@ -10,7 +10,7 @@ var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 
 // Mongoose connection to MongoDB
-mongoose.connect('mongodb://localhost:27017/namibia', function (error) {
+mongoose.connect('mongodb://localhost:27017/kuzikus', function (error) {
     if (error) {
         console.log(error);
     }
