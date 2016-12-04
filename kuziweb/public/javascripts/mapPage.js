@@ -81,6 +81,9 @@ function addTempFeature(action) {
         case '2':
             addTempfeature2();
             break;
+        case '3':
+            addTempFeature_inc_dead();
+            break;
     }
     document.getElementById("form").style.visibility ="visible";
     curCoord = null;
@@ -101,6 +104,7 @@ function mapClick(e) {
 
         content.innerHTML = '<ul><li><a href="#" data-action="1">Observation 1</a></li>' +
                                 '<li><a href="#" data-action="2">Observation 2</a></li>'+
+                                '<li><a href="#" data-action="3">Incident - Dead animal</a></li>'+
                             '</ul>';
 
         el.appendChild(content);
@@ -116,6 +120,9 @@ function mapClick(e) {
                         break;
                     case 'observation2':
                         updateForm2(feature);
+                        break;
+                    case 'observation_inc_dead':
+                        updateForm_inc_dead(feature);
                         break;
                 } 
 				document.getElementById("form").style.visibility ="visible";
@@ -177,6 +184,9 @@ function savedata(callback) {
         case 'observation2':
             savedataobs2(callback);
             break;
+        case 'observation_inc_dead':
+            savedataobs_inc_dead(callback);
+            break;
     }  
 }
 
@@ -200,6 +210,9 @@ function addObservations(layer, name, callback) {
             break;
         case 'observation2':
             addObservations2(layer, callback);
+            break;
+        case 'observation_inc_dead':
+            addObservations_inc_dead(layer, callback);
             break;
     }
 }
@@ -273,6 +286,21 @@ $(document).ready(function(){
     var name = "observation1"
     var layer = new ol.layer.Vector({
         name: "observation1",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer);   
+
+    //Ajout des observations à la couche observation
+    addObservations(layer, name, logMessage);  
+
+
+    // Ajout de la couche "observations" (nb. pas d'url, donc pas de contenu)
+    name = "observation_inc_dead"
+    layer = new ol.layer.Vector({
+        name: "observation_inc_dead",
         style: Point_Style,
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),

@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="./stylesheets/mapPage.css" type="text/css">
 
         <script type="text/javascript" src="./javascripts/obs1.js"></script>
+        <script type="text/javascript" src="./javascripts/obs_inc_dead.js"></script>
 
         <script type="text/javascript" src="./javascripts/superagent.js"></script>
         <script type="text/javascript" src="./javascripts/ol3-popup.js"></script>
@@ -47,6 +48,22 @@
             <div id="Nomc" class="container">
                 <label>Nom</label>
                 <input  id="nameinput" type="text" ></input>
+            </div>
+            <div id="Spec" class="container">
+                  <label>Species</label>
+                  <select id="speciesinput" size=1 >
+                    <option value="rhinoceros">Rhinoceros</option>
+                    <option value="giraffe">Giraffe</option>
+                    <option value="zebra">Zebra</option>
+                    <option value="...">...</option>
+                  </select>
+            </div>
+            <div id="Sexc" class="container">
+                  <label>Sex</label>
+                  <select id="sexinput" size=1>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
             </div>
             <div id="Comc" class="container">
                 <label >Comment</label>

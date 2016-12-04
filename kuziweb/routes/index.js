@@ -140,6 +140,52 @@ router.put('/form/observation1/updateItem', function(req, res) {
 
 //etc...
 
+//****** Observation : incident - dead animal observation_inc_dead **********************
+
+var obs_inc_dead = new Schema({
+    name : String,
+    species : String,
+    sex : String,
+    comment: String,
+    added: String,
+    image:String,
+    geometry : {
+        type: { type: String },
+        coordinates: []
+    }
+});
+var observation_inc_dead = mongoose.model('observation_inc_dead', obs_inc_dead, 'observations_inc_dead');
+
+router.post('/form/observation_inc_dead', function(req, res) {
+    console.log(req.body);
+    var newObs = new observation_inc_dead(req.body);
+    newObs.save(function(err,newobj) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send(newobj);
+        };
+    });
+});
+
+router.get('/form/observation_inc_dead', function(req,res) {
+    observation_inc_dead.find({}, function(err,docs){
+        res.send(docs);
+    });
+});
+
+router.put('/form/observation_inc_dead/updateItem', function(req, res) {
+    var id = req.body.id, body = req.body;
+    observation_inc_dead.findByIdAndUpdate(id, body, function(err, docs) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send("OK");
+        };
+    });
+});
 
 
 module.exports = router;
