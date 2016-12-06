@@ -84,8 +84,11 @@ function addTempFeature(action) {
         case '3':
             addTempFeature_inc_dead();
             break;
+        case '4':
+            addTempFeatureWoodressource();
+            break;
     }
-    document.getElementById("form").style.visibility ="visible";
+    document.getElementById("form").style.display ="block";
     curCoord = null;
 }
 
@@ -105,6 +108,7 @@ function mapClick(e) {
         content.innerHTML = '<ul><li><a href="#" data-action="1">Observation 1</a></li>' +
                                 '<li><a href="#" data-action="2">Observation 2</a></li>'+
                                 '<li><a href="#" data-action="3">Incident - Dead animal</a></li>'+
+                                '<li><a href="#" data-action="4">Wood ressource</a></li>'+
                             '</ul>';
 
         el.appendChild(content);
@@ -124,8 +128,11 @@ function mapClick(e) {
                     case 'observation_inc_dead':
                         updateForm_inc_dead(feature);
                         break;
+                    case 'woodressource':
+                        updateFormWoodressource(feature);
+                    break;
                 } 
-				document.getElementById("form").style.visibility ="visible";
+				document.getElementById("form").style.display ="block";
 				obsLayer = layer;
                 editedFeature = feature;
 				return;
@@ -145,7 +152,7 @@ function mapClick(e) {
     }
     document.getElementById("addButton").style.color="black";
     document.getElementById("modButton").style.color="black";
-    document.getElementById("form").style.visibility ="collapse";
+    document.getElementById("form").style.display ="none";
     mode = "none";
 }
 
@@ -187,6 +194,9 @@ function savedata(callback) {
         case 'observation_inc_dead':
             savedataobs_inc_dead(callback);
             break;
+         case 'woodressource':
+            savedataWoodressource(callback);
+        break;
     }  
 }
 
@@ -214,6 +224,9 @@ function addObservations(layer, name, callback) {
         case 'observation_inc_dead':
             addObservations_inc_dead(layer, callback);
             break;
+        case 'woodressource':
+            addWoodressource(layer, callback);
+        break;
     }
 }
 
@@ -306,9 +319,20 @@ $(document).ready(function(){
             format: new ol.format.GeoJSON(),
         })
     });
-    map.addLayer(layer);   
+    map.addLayer(layer); 
 
-    //Ajout des observations à la couche observation
+    addObservations(layer, name, logMessage);    
+
+    name = "woodressource"
+    layer = new ol.layer.Vector({
+        name: "woodressource",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+ 
     addObservations(layer, name, logMessage);  
     
     //****************************************************

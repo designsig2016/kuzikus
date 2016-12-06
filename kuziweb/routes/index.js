@@ -187,5 +187,50 @@ router.put('/form/observation_inc_dead/updateItem', function(req, res) {
     });
 });
 
+//******* pour woodressource ****************************************
+
+var woodressourceSC = new Schema({
+    name : String,
+    woodtype : String,
+    comment: String,
+    added: String,
+    image:String,
+    geometry : {
+        type: { type: String },
+        coordinates: []
+    }
+});
+var woodressource = mongoose.model('woodressource', woodressourceSC, 'woodressources');
+
+router.post('/form/woodressource', function(req, res) {
+    console.log(req.body);
+    var newObs = new woodressource(req.body);
+    newObs.save(function(err,newobj) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send(newobj);
+        };
+    });
+});
+
+router.get('/form/woodressource', function(req,res) {
+    woodressource.find({}, function(err,docs){
+        res.send(docs);
+    });
+});
+
+router.put('/form/woodressource/updateItem', function(req, res) {
+    var id = req.body.id, body = req.body;
+    woodressource.findByIdAndUpdate(id, body, function(err, docs) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send("OK");
+        };
+    });
+});
 
 module.exports = router;

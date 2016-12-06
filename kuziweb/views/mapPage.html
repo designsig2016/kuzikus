@@ -9,6 +9,7 @@
 
         <script type="text/javascript" src="./javascripts/obs1.js"></script>
         <script type="text/javascript" src="./javascripts/obs_inc_dead.js"></script>
+        <script type="text/javascript" src="./javascripts/woodressource.js"></script>
 
         <script type="text/javascript" src="./javascripts/superagent.js"></script>
         <script type="text/javascript" src="./javascripts/ol3-popup.js"></script>
@@ -64,6 +65,15 @@
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                   </select>
+            </div>
+            <div id = "woodtypediv" class="container">
+                    <label>Wood type</label>
+                    <form name="type" id=woodtype > 
+                        <input type="radio" name="typeWood" value="Dead tree" id="Dead tree" checked> Dead tree<br>
+                        <input type="radio" name="typeWood" value="Brushes" id="Brushes" > Brushes<br>
+                        <input type="radio" name="typeWood" value="Other" id="Other" > Other <br>
+                        <input  type="text" name="otherText" id="otherText">
+                    </form>
             </div>
             <div id="Comc" class="container">
                 <label >Comment</label>

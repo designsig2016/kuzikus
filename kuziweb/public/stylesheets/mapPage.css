@@ -17,7 +17,7 @@ html,body{
     height:100%;
     width: 300px;
     background: whitesmoke;
-    visibility: collapse;
+    display: none;
 }
 #legend {
     position: absolute;
