@@ -47,6 +47,7 @@ function updateFormDisplay_inc_dead() {
     document.getElementById("Phoc").style.display ="block";
     document.getElementById("Spec").style.display ="block";
     document.getElementById("Sexc").style.display ="block";
+    document.getElementById("woodtypediv").style.display ="none";
 }
 
 
