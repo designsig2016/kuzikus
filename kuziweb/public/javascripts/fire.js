@@ -1,5 +1,4 @@
-//--------------------------
-function addTempFeature_Fire() {
+function addTempFeature_fire() {
     var tFeature = {
             'type': 'Feature',
             'properties': {
@@ -31,17 +30,23 @@ function addTempFeature_Fire() {
     document.getElementById("Xinput").value = tFeature.geometry.coordinates[0];
     document.getElementById("Yinput").value = tFeature.geometry.coordinates[1];
     document.getElementById("PhotoId").value = tFeature.geometry.image;
-    updateEditedFeature_fire()
+    updateFormDisplay_fire()
 }
 
 function updateFormDisplay_fire() {
     document.getElementById("IDc").style.display ="block";
-    document.getElementById("Xc").style.display ="none";
-    document.getElementById("Yc").style.display ="none";
-    document.getElementById("Comc").style.display ="none";
+    document.getElementById("Xc").style.display ="block";
+    document.getElementById("Yc").style.display ="block";
+    document.getElementById("Comc").style.display ="block";
     document.getElementById("Addc").style.display ="block";
     document.getElementById("Phoc").style.display ="block";
     document.getElementById("Spec").style.display ="none";
+    document.getElementById("Spec").style.display ="none";
+    document.getElementById("RPSc").style.display ="none";
+    document.getElementById("woodtypediv").style.display ="none";
+    document.getElementById("Nb_animals").style.display ="none";
+    document.getElementById("Structure_type").style.display ="none";
+    document.getElementById("CSc").style.display ="none";
     document.getElementById("Sexc").style.display ="none";
 }
 
@@ -56,7 +61,7 @@ function updateEditedFeature_fire() {
     editedFeature.setGeometry(geom);
 }
 
-function updateForm_Fire(feature) {
+function updateForm_fire(feature) {
     document.getElementById("IDinput").value = feature.getProperties().id;
     document.getElementById("nameinput").value = feature.getProperties().name;
     document.getElementById("commentinput").value = feature.getProperties().comment;
@@ -70,12 +75,11 @@ function updateForm_Fire(feature) {
         document.getElementById("imgElement").src = '/file/' + feature.getProperties().image;
     }
     updateFormDisplay_fire()
-
 }
 
 
 // action exécutée sur click sur le bouton save
-function savedata_Fire(callback) {
+function savedata_fire(callback) {
     var request = window.superagent;
     var observation = { id:document.getElementById("IDinput").value,
                         name: document.getElementById("nameinput").value,

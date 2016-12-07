@@ -282,7 +282,7 @@ router.put('/form/RarePlant/updateItem', function(req, res) {
 
 //******* fire (Cyril) ****************************************
 
-var obs1 = new Schema({
+var fireSC = new Schema({
     name : String,
     comment: String,
     added: String,
@@ -292,7 +292,7 @@ var obs1 = new Schema({
         coordinates: []
     }
 });
-var fire = mongoose.model('fire', fire, 'fire');
+var fire = mongoose.model('fire', fireSC, 'fire');
 
 router.post('/form/fire', function(req, res) {
     console.log(req.body);

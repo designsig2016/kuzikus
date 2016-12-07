@@ -98,10 +98,11 @@ function addTempFeature(action) {
             addTempFeature_RarePlant();
             break;
         case '8':
-            addTempFeature_Fire();
+            document.getElementById("form").style.display="block";
+            addTempFeature_fire();
             break;
     }
-    document.getElementById("form").style.display ="block";
+    document.getElementById("form").style.display="block";
     curCoord = null;
 }
 
@@ -154,10 +155,9 @@ function mapClick(e) {
                     case 'RarePlant':
                         updateFormRarePlant(feature);
                     break;
-					case 'Fire':
-                        updateForm_Fire(feature);
+					case 'fire':
+                        updateForm_fire(feature);
                     break;
-                    
                 } 
 				document.getElementById("form").style.display ="block";
 				obsLayer = layer;
@@ -230,8 +230,8 @@ function savedata(callback) {
         case 'RarePlant':
             savedataobsRarePlant(callback);
         break;
-        case 'Fire':
-            savedata_Fire(callback);
+        case 'fire':
+            savedata_fire(callback);
         break;
     }  
 }
@@ -269,7 +269,7 @@ function addObservations(layer, name, callback) {
         case 'RarePlant':
             addRarePlant(layer,callback);
         break;
-    	case 'Fire':
+    	case 'fire':
             addObservations_fire(layer,callback);
         break;
     }
@@ -390,7 +390,7 @@ $(document).ready(function(){
     });
     map.addLayer(layer); 
 
-    addObservations(layer, name, logMessage); 
+    //addObservations(layer, name, logMessage); 
     
     name = "RarePlant"
     layer = new ol.layer.Vector({
