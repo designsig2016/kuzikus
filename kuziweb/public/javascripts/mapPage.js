@@ -87,6 +87,9 @@ function addTempFeature(action) {
         case '4':
             addTempFeatureWoodressource();
             break;
+        case '5':
+            addTempFeature_herd();
+            break;
     }
     document.getElementById("form").style.display ="block";
     curCoord = null;
@@ -109,6 +112,8 @@ function mapClick(e) {
                                 '<li><a href="#" data-action="2">Observation 2</a></li>'+
                                 '<li><a href="#" data-action="3">Incident - Dead animal</a></li>'+
                                 '<li><a href="#" data-action="4">Wood ressource</a></li>'+
+                                '<li><a href="#" data-action="5">Herd</a></li>'+
+                                '<li><a href="#" data-action="6">Structure</a></li>'+
                             '</ul>';
 
         el.appendChild(content);
@@ -130,6 +135,9 @@ function mapClick(e) {
                         break;
                     case 'woodressource':
                         updateFormWoodressource(feature);
+                    break;
+                    case 'observation_herd':
+                        updateForm_herd(feature);
                     break;
                 } 
 				document.getElementById("form").style.display ="block";
@@ -197,6 +205,9 @@ function savedata(callback) {
          case 'woodressource':
             savedataWoodressource(callback);
         break;
+        case 'observation_herd':
+            savedataobs_herd(callback);
+            break;
     }  
 }
 
@@ -227,6 +238,9 @@ function addObservations(layer, name, callback) {
         case 'woodressource':
             addWoodressource(layer, callback);
         break;
+        case 'observation_herd':
+            addObservations_herd(layer, callback);
+            break;
     }
 }
 
@@ -334,6 +348,18 @@ $(document).ready(function(){
     map.addLayer(layer); 
  
     addObservations(layer, name, logMessage);  
+
+    name = "observation_herd"
+    layer = new ol.layer.Vector({
+        name: "observation_herd",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+
+    addObservations(layer, name, logMessage); 
     
     //****************************************************
 

@@ -10,6 +10,8 @@
         <script type="text/javascript" src="./javascripts/obs1.js"></script>
         <script type="text/javascript" src="./javascripts/obs_inc_dead.js"></script>
         <script type="text/javascript" src="./javascripts/woodressource.js"></script>
+        <script type="text/javascript" src="./javascripts/herds.js"></script>
+        <script type="text/javascript" src="./javascripts/Structure.js"></script>
 
         <script type="text/javascript" src="./javascripts/superagent.js"></script>
         <script type="text/javascript" src="./javascripts/ol3-popup.js"></script>
@@ -68,7 +70,7 @@
             </div>
             <div id = "woodtypediv" class="container">
                     <label>Wood type</label>
-                    <form name="type" id=woodtype > 
+                    <form name="type" id="woodtype" > 
                         <input type="radio" name="typeWood" value="Dead tree" id="Dead tree" checked> Dead tree<br>
                         <input type="radio" name="typeWood" value="Brushes" id="Brushes" > Brushes<br>
                         <input type="radio" name="typeWood" value="Other" id="Other" > Other <br>
@@ -83,7 +85,14 @@
                           <option value="Aardwark hole"> Aardwark hole</option>
                           <option value="Rhino dung pile"> Rhino dung pile</option>
                     </select>
-            </div> <p></p>
+            </div>
+            <div id="Nb_animals" class="container">
+                    <label>Number</label>
+                    <form>
+                       <input id= "numberinput" type="number" name="quantity" min="1">
+                    </form>
+            </div>
+            <p></p>
             <div id="Comc" class="container">
                 <label >Comment</label>
                 <input id="commentinput" type="text"></input>
