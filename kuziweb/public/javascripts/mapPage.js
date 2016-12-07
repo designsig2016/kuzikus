@@ -23,6 +23,10 @@ var Roads_Style = new ol.style.Style({
     stroke: new ol.style.Stroke({ color: 'rgba(0,0,0,1)', width: 2 })
 });
 
+var Fire_Style = new ol.style.Style({ 
+    stroke: new ol.style.Stroke({ color: 'rgba(155,155,155,1)', width: 2 })
+});
+
 var Point_Style = new ol.style.Style({
         image: new ol.style.Circle({
                 radius: 5,
@@ -90,8 +94,12 @@ function addTempFeature(action) {
         case '5':
             addTempFeature_herd();
             break;
-        case '6':
+        case '7':
             addTempFeature_RarePlant();
+            break;
+        case '8':
+            addTempFeature_Fire();
+            break;
     }
     document.getElementById("form").style.display ="block";
     curCoord = null;
@@ -116,7 +124,8 @@ function mapClick(e) {
                                 '<li><a href="#" data-action="4">Wood ressource</a></li>'+
                                 '<li><a href="#" data-action="5">Herd</a></li>'+
                                 '<li><a href="#" data-action="6">Structure</a></li>'+
-                                '<li><a href="#" data-action="7">Rare Plants</a></li>'
+                                '<li><a href="#" data-action="7">Rare Plants</a></li>'+
+                                '<li><a href="#" data-action="8">Fire</a></li>' +
                             '</ul>';
 
         el.appendChild(content);
@@ -144,6 +153,9 @@ function mapClick(e) {
                     break;
                     case 'RarePlant':
                         updateFormRarePlant(feature);
+                    break;
+					case 'Fire':
+                        updateForm_Fire(feature);
                     break;
                     
                 } 
@@ -218,6 +230,9 @@ function savedata(callback) {
         case 'RarePlant':
             savedataobsRarePlant(callback);
         break;
+        case 'Fire':
+            savedata_Fire(callback);
+        break;
     }  
 }
 
@@ -253,6 +268,9 @@ function addObservations(layer, name, callback) {
             break;
         case 'RarePlant':
             addRarePlant(layer,callback);
+        break;
+    	case 'Fire':
+            addObservations_fire(layer,callback);
         break;
     }
 }
@@ -374,9 +392,19 @@ $(document).ready(function(){
 
     addObservations(layer, name, logMessage); 
     
-        name = "RarePlant"
+    name = "RarePlant"
     layer = new ol.layer.Vector({
         name: "RarePlant",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+    
+    name = "fire"
+    layer = new ol.layer.Vector({
+        name: "fire",
         style: Point_Style,
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),

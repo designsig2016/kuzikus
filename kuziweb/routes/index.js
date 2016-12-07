@@ -279,3 +279,49 @@ router.put('/form/RarePlant/updateItem', function(req, res) {
         };
     });
 });
+
+//******* fire (Cyril) ****************************************
+
+var obs1 = new Schema({
+    name : String,
+    comment: String,
+    added: String,
+    image:String,
+    geometry : {
+        type: { type: String },
+        coordinates: []
+    }
+});
+var fire = mongoose.model('fire', fire, 'fire');
+
+router.post('/form/fire', function(req, res) {
+    console.log(req.body);
+    var newObs = new fire(req.body);
+    newObs.save(function(err,newobj) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send(newobj);
+        };
+    });
+});
+
+router.get('/form/fire', function(req,res) {
+    fire.find({}, function(err,docs){
+        res.send(docs);
+    });
+});
+
+router.put('/form/fire/updateItem', function(req, res) {
+    var id = req.body.id, body = req.body;
+    fire.findByIdAndUpdate(id, body, function(err, docs) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send("OK");
+        };
+    });
+});
+
