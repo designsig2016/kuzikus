@@ -1,240 +1,411 @@
+var map;
+var tempFeature;
+var obsLayer;
+var form;
+var editedFeature;
+var popup;
+var curCoord;
+
+	
+
+//Définition de quelques styles pour les couches vecteur
+
+var Buildings_Style = new ol.style.Style({ 
+    fill: new ol.style.Fill({ color: 'rgba(200, 200, 200, 1)', width: 4 }),
+    stroke: new ol.style.Stroke({ color: 'rgba(255,255,255,1)', width: 1 })
+});
+                
+var Fences_Style = new ol.style.Style({ 
+    stroke: new ol.style.Stroke({ color: 'rgba(255,0,0,1)', width: 3})
+});
+
+var Roads_Style = new ol.style.Style({ 
+    stroke: new ol.style.Stroke({ color: 'rgba(0,0,0,1)', width: 2 })
+});
+
+var Point_Style = new ol.style.Style({
+        image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({color: 'black'}),
+                stroke: new ol.style.Stroke({color: 'black', width: 0})
+        })
+});
+
+
+// affiche une image du fichier image sélectionné dans le tag imgElement
+function onFileSelected(event) {
+    var selectedFile = event.target.files[0];
+    var reader = new FileReader();
+
+    var imgtag = document.getElementById("imgElement");
+    imgtag.title = selectedFile.name;
+
+    reader.onload = function(event) {
+        imgtag.src = event.target.result;
+    };
+    reader.readAsDataURL(selectedFile);
+}
+    
+// gestion du fonctionnement des boutons add et modify
+var mode = "none";   
+function setMode() {
+    if(this.id == "addButton") {
+        document.getElementById("modButton").style.color="black";
+        if(mode==="add") {
+            mode="none";
+            this.style.color = "black";
+        }
+        else {
+            mode = "add";
+            this.style.color = "red";
+        } 
+    }
+    else if(this.id == "modButton") {
+        document.getElementById("addButton").style.color="black";
+        if(mode==="mod") {
+            mode="none";
+            this.style.color = "black";
+        }
+        else {
+            mode = "mod";
+            this.style.color = "red";
+        } 
+    }
+}
+
+function addTempFeature(action) {
+    switch (action) {
+        case '1':
+            addTempFeature1();
+            break;
+        case '2':
+            addTempfeature2();
+            break;
+        case '3':
+            addTempFeature_inc_dead();
+            break;
+        case '4':
+            addTempFeatureWoodressource();
+            break;
+        case '5':
+            addTempFeature_herd();
+            break;
+        case '6':
+            addTempFeatureStructure();
+            break;
+    }
+    document.getElementById("form").style.display ="block";
+    curCoord = null;
+}
+
+
+// ajoute un objet provisoire dans le couche des observations
+function mapClick(e) {
+    curCoord = e.coordinate;
+	if(mode==="add") {
+
+        // Création et affichage du popup
+        var el = document.createElement("div"); 
+        var title = document.createElement("h4");
+        title.innerHTML = 'Créer une nouvelle observation?';
+        el.appendChild(title);
+        var content = document.createElement("div");
+
+        content.innerHTML = '<ul><li><a href="#" data-action="1">Observation 1</a></li>' +
+                                '<li><a href="#" data-action="2">Observation 2</a></li>'+
+                                '<li><a href="#" data-action="3">Incident - Dead animal</a></li>'+
+                                '<li><a href="#" data-action="4">Wood ressource</a></li>'+
+                                '<li><a href="#" data-action="5">Herd</a></li>'+
+                                '<li><a href="#" data-action="6">Structure</a></li>'+
+                            '</ul>';
+
+        el.appendChild(content);
+        popup.show(e.coordinate, el);
+
+    }
+    else if(mode==="mod") {
+	    this.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+	    	//if(layer === obsLayer) {
+                switch (layer.getProperties().name) {
+                    case 'observation1':
+                        updateForm1(feature);
+                        break;
+                    case 'observation2':
+                        updateForm2(feature);
+                        break;
+                    case 'observation_inc_dead':
+                        updateForm_inc_dead(feature);
+                        break;
+                    case 'woodressource':
+                        updateFormWoodressource(feature);
+                    break;
+                    case 'observation_herd':
+                        updateForm_herd(feature);
+                    break;
+                    case 'observation_structure':
+                        updateFormStructure(feature);
+                    break;
+                } 
+				document.getElementById("form").style.display ="block";
+				obsLayer = layer;
+                editedFeature = feature;
+				return;
+			//}
+	    });
+	}
+}
+
+// actions exécutées lorsqu'une observation a été stockée dans la BD Mongo
+ function onsaved(arg, msg) {
+    if(arg == null){
+        logMessage(arg, msg);
+    }
+    else {
+        //do something with the new feature
+        if(mode == 'add') { tempFeature._id = arg._id; }
+    }
+    document.getElementById("addButton").style.color="black";
+    document.getElementById("modButton").style.color="black";
+    document.getElementById("form").style.display ="none";
+    mode = "none";
+}
+
+function logMessage(arg, msg) {
+    console.log(msg);
+}
+
+
+// action exécutée sur click sur le bouton save
+function saveform(callback) {
+    var files = document.getElementById("fileinput").files;
+    if(files.length >0) {
+        var file = files[0];
+        var request = window.superagent;
+        request
+            .post('/file')
+            .attach('fileToUpload',file,file.name)
+            .end(function(err, res) {
+                if (res.status !== 200) {
+                    return callback(null, res.text);
+                }
+                document.getElementById("PhotoId").value = res.body._id;
+                savedata(callback);
+            });
+    }
+    else {
+        savedata(callback); 
+    }
+}
+
+function savedata(callback) {
+    switch (obsLayer.getProperties().name) {
+        case 'observation1':
+            savedataobs1(callback);
+            break;
+        case 'observation2':
+            savedataobs2(callback);
+            break;
+        case 'observation_inc_dead':
+            savedataobs_inc_dead(callback);
+            break;
+         case 'woodressource':
+            savedataWoodressource(callback);
+        break;
+        case 'observation_herd':
+            savedataobs_herd(callback);
+            break;
+        case 'observation_structure':
+            savedataStructure(callback);
+            break;
+    }  
+}
+
+
+
+
+// action exécutée sur le bouton annuler
+function cancelform() {
+    if(mode === 'add') {
+        obsLayer.getSource().removeFeature(tempFeature);
+    }
+    editedFeature = null;
+    onsaved(null,'cancelled');
+}
+
+// ajout initial des observations stockées dans la BD
+function addObservations(layer, name, callback) {
+    switch (name) {
+        case 'observation1':
+            addObservations1(layer, callback);
+            break;
+        case 'observation2':
+            addObservations2(layer, callback);
+            break;
+        case 'observation_inc_dead':
+            addObservations_inc_dead(layer, callback);
+            break;
+        case 'woodressource':
+            addWoodressource(layer, callback);
+        break;
+        case 'observation_herd':
+            addObservations_herd(layer, callback);
+            break;
+        case 'observation_structure':
+            addObservationsStructure(layer, callback);
+            break;
+    }
+}
+
+
+//Script executé lorsque la page est chargée
+
 $(document).ready(function(){
-    var style = new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: "rgba(255, 255, 255, 0.6)"
-    	}),
-        stroke: new ol.style.Stroke({
-          color: "#319FD3",
-          width: 1
-        }),
-        text: new ol.style.Text({
-          font: "12px Calibri,sans-serif",
-          fill: new ol.style.Fill({
-            color: "#000"
-          }),
-          stroke: new ol.style.Stroke({
-            color: "#fff",
-            width: 3
-    	   })
+    
+    // Crée la carte Lat/Lon avec une couche de fond OpenStreetMap
+    map = new ol.Map({
+        layers: [
+            new ol.layer.Tile({
+                visible: true,
+                name: 'Bing Aerial',
+                preload: Infinity,
+                source: new ol.source.BingMaps({
+                    key: 'AprP0vrE1DPXFClpddIWcrayE_6Jxy6MaQnaCWZddG2GVS6QlBv1Eg2iitsG9JIQ',
+                    imagerySet: 'Aerial'
+                })
+            }),
+			new ol.layer.Tile({
+                visible: false,
+                name: 'Open Street Map',
+                source: new ol.source.OSM()
+            })
+        ],
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.transform([18.4, -23.2],'EPSG:4326', 'EPSG:3857'),
+			zoom: 11
+		})
+    });
+
+    //Ajout de collections geojson de mongo
+
+    var vector = new ol.layer.Vector({
+		style: Buildings_Style,
+        name: 'Buildings',
+		source: new ol.source.Vector({
+			url: '/mapjson/buildings',
+			format: new ol.format.GeoJSON(),
+		})
+    });
+    map.addLayer(vector);        
+    
+	vector = new ol.layer.Vector({
+		style: Fences_Style,
+        name: 'Fences',
+		source: new ol.source.Vector({
+			url: '/mapjson/fences',
+			format: new ol.format.GeoJSON(),
+		})
+	});
+	map.addLayer(vector);
+
+    vector = new ol.layer.Vector({
+        style: Roads_Style,
+        name: 'Roads',
+        source: new ol.source.Vector({
+            url: '/mapjson/roads',
+            format: new ol.format.GeoJSON(),
         })
     });
-      
-    // Vector layer from a GeoJson file url
-	var boreholes = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			url: "/layers/boreholes",
-			format: new ol.format.GeoJSON(),
-			projection: "EPSG:4326"
-		})
-	});
-	var fire = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			format: new ol.format.GeoJSON(),
-			url: "./layers/burned_areas.geojson",
-			projection: "EPSG:3857"
-		})
-	});
-	var roads = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			format: new ol.format.GeoJSON(),
-			url: "./layers/roads",
-			projection: "EPSG:3857"
-		})
-	});
-            
-      var raster = new ol.layer.Tile({
-	    preload: 4,
-        source: new ol.source.OSM()
-      });
+    map.addLayer(vector);
 
-      var source = new ol.source.Vector({wrapX: false});
-      
-      var vector = new ol.layer.Vector({
-        source: source
-      });
-      var layers = [];
-    layers.push(raster);
-    layers.push(vector);	
-    layers.push(roads);	
-   
-	// MAP
-	var view = new ol.View({
-        // the view"s initial state
-        center: ol.proj.fromLonLat([18.39,-23.23]),
-          zoom: 12
-      });
-	var map = new ol.Map({
-		layers: layers,
-		loadTilesWhileAnimating: true,
-		target: "map",
-		controls: ol.control.defaults({
-		  attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-			collapsible: false
-		  })
-		}),
-		view: view
-	});
-      
-    // Add selected layers to map
-    $('label').click(function(event) {
-    	addLayers();
-	});
 
-    function addLayers() {
-		var layers = document.getElementsByClassName("layers");
-		var all = [];//rareanimals,flora,herds,boreholes,structures,fire,bush,wood (we now have borholes (all[3]) and fire (all[5]))
-		var checked = [];
-		var checkedInd = [];
-		var unchecked = [];
-		for (i = 0; i < 8; i++) {//put names of checked and unchecked labels in an array
-			all.push(layers[i].name);
-			if(layers[i].checked){
-				checked.push(layers[i].name);
-				checkedInd.push(all.indexOf(layers[i].name))
-			}
-			else{
-    			unchecked.push(layers[i].name);
-    		}
-		}
-		layers = []; // empty layers, we don"t want to add new ones every time
-    	layers.push(raster);
-	    layers.push(vector);
-		layers.push(roads);	
-	    var text = [];
-	    for(i=0;i<checked.length;i++){
-			switch(checked[i].toString()){// add checked layers to map
-				case "boreholes":
-					layers.push(boreholes);
-					break;
-				case "fire":
-					layers.push(fire);	
-					break;
-				default:
-					text.push("did nothing");
-			}
-		}
-		// debugging: document.getElementById("test").innerHTML = "Selected Layers: "+checked.toString()+" (number of layers:"+layers.length+")";
-	    layers[1].setMap(map);
-	    for(i=0;i<layers.length;i++){ // show all selected layers on the map
-	    	layers[i].setMap(map);
-	    }
-	}
-    var highlightStyleCache = {};
+    //******* pour chaque type d'observations ************
 
-    var featureOverlay = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-        map: map,
-        style: function(feature, resolution) {
-          var text = resolution < 5000 ? feature.get("name") : "";
-          if (!highlightStyleCache[text]) {
-            highlightStyleCache[text] = new ol.style.Style({
-              stroke: new ol.style.Stroke({
-                color: "#f00",
-                width: 1
-              }),
-              fill: new ol.style.Fill({
-                color: "rgba(255,0,0,0.1)"
-              }),
-              text: new ol.style.Text({
-                font: "12px Calibri,sans-serif",
-                text: text,
-                fill: new ol.style.Fill({
-                  color: "#000"
-                }),
-                stroke: new ol.style.Stroke({
-                  color: "#f00",
-                  width: 3
-                })
-              })
-            });
-          }
-          return highlightStyleCache[text];
+    // Ajout de la couche "observations" (nb. pas d'url, donc pas de contenu)
+    var name = "observation1"
+    var layer = new ol.layer.Vector({
+        name: "observation1",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer);   
+
+    //Ajout des observations à la couche observation
+    addObservations(layer, name, logMessage);  
+
+
+    // Ajout de la couche "observations" (nb. pas d'url, donc pas de contenu)
+    name = "observation_inc_dead"
+    layer = new ol.layer.Vector({
+        name: "observation_inc_dead",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+
+    addObservations(layer, name, logMessage);    
+
+    name = "woodressource"
+    layer = new ol.layer.Vector({
+        name: "woodressource",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+ 
+    addObservations(layer, name, logMessage);  
+
+    name = "observation_herd"
+    layer = new ol.layer.Vector({
+        name: "observation_herd",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer);
+    
+        name = "observation_structure"
+    layer = new ol.layer.Vector({
+        name: "observation_structure",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+
+    addObservations(layer, name, logMessage); 
+    
+    //****************************************************
+
+
+    document.getElementById("addButton").onclick = setMode;
+    document.getElementById("modButton").onclick = setMode;
+    map.on('singleclick', mapClick);
+
+    document.getElementById("cancelBtn").onclick = cancelform;
+    document.getElementById("saveBtn").onclick = function() {saveform(onsaved)};
+
+
+
+    // Ajout du popup
+    popup = new ol.Overlay.Popup();
+    map.addOverlay(popup);
+
+    popup.getElement().addEventListener('click', function(e) {
+        var action = e.target.getAttribute('data-action');
+        if (action) {
+            popup.hide();
+            addTempFeature(action);
         }
-      });
+    }, false);
 
-      var highlight;
-      var displayFeatureInfo = function(pixel) {
 
-        var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
-          return feature;
-        }); 
-        
-        var info = document.getElementById("info");
-        if (feature) {
-          info.innerHTML = feature.getId() + ": " + feature.get("name");
-        } else {
-          info.innerHTML = "&nbsp;";
-        }
-
-        if (feature !== highlight) {
-          if (highlight) {
-            featureOverlay.getSource().removeFeature(highlight);
-          }
-          if (feature) {
-            featureOverlay.getSource().addFeature(feature);
-          }
-          highlight = feature;
-        }
-
-      };
-
-      map.on("pointermove", function(evt) {
-        if (evt.dragging) {
-          return;
-        }
-        var pixel = map.getEventPixel(evt.originalEvent);
-        displayFeatureInfo(pixel);
-      });
-
-      map.on("click", function(evt) {
-        displayFeatureInfo(evt.pixel);
-      });
-      
-      // Easter Egg: fly to Bern
-      // from https://github.com/DmitryBaranovskiy/raphael
-      function bounce(t) {
-        var s = 7.5625, p = 2.75, l;
-        if (t < (1 / p)) {
-          l = s * t * t;
-        } else {
-          if (t < (2 / p)) {
-            t -= (1.5 / p);
-            l = s * t * t + 0.75;
-          } else {
-            if (t < (2.5 / p)) {
-              t -= (2.25 / p);
-              l = s * t * t + 0.9375;
-            } else {
-              t -= (2.625 / p);
-              l = s * t * t + 0.984375;
-            }
-          }
-        }
-        return l;
-      }
-
-      // from https://github.com/DmitryBaranovskiy/raphael
-      function elastic(t) {
-        return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
-      }
-		
-	var bern = ol.proj.fromLonLat([7.4458, 46.95]);
-
-        var flyToBern = document.getElementById("fly-to-bern");
-      flyToBern.addEventListener("click", function() {
-        var duration = 2000;
-        var start = +new Date();
-        var pan = ol.animation.pan({
-          duration: duration,
-          source: /** @type {ol.Coordinate} */ (view.getCenter()),
-          start: start
-        });
-        var bounce = ol.animation.bounce({
-          duration: duration,
-          resolution: 4 * view.getResolution(),
-          start: start
-        });
-        map.beforeRender(pan, bounce);
-        view.setCenter(bern);
-      }, false);
-   }); //jquery end
+});
