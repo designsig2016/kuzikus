@@ -12,9 +12,11 @@
         <script type="text/javascript" src="./javascripts/woodressource.js"></script>
         <script type="text/javascript" src="./javascripts/herds.js"></script>
         <script type="text/javascript" src="./javascripts/Structure.js"></script>
-
+        <script type="text/javascript" src="./javascripts/obsRarePlant"></script>
         <script type="text/javascript" src="./javascripts/superagent.js"></script>
         <script type="text/javascript" src="./javascripts/ol3-popup.js"></script>
+        
+        
         <link rel="stylesheet" href="./stylesheets/ol3-popup.css" type="text/css">
         <title>mapPage</title>
     </head>
@@ -87,12 +89,13 @@
                     </select>
             </div>
 
-            <div id ="RarePlant_type" class="container">
+            <div id ="RPSc" class="container">
                 <label>Plant Species:</label>
                 <input id="plantspecies" type="text"><br>
-                
+            </div> 
+            <div id="CSc" class="container">
                 <label>Conservation Status</label>
-                <select id="ConcervationLevel">
+                <select id="conservationlevel">
                 <option value="criticallyendangered">Critically Endangered</option>
                 <option value="endangered">Endangered</option>
                 <option value="vulnerable">Vulnerable</option>
