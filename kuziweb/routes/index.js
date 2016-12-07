@@ -234,3 +234,48 @@ router.put('/form/woodressource/updateItem', function(req, res) {
 });
 
 module.exports = router;
+
+//**************************************************** Rare Plants
+var obsRarePlant = new Schema({
+    name : String,
+    ConservationLevel: String,
+    comment: String,
+    added: String,
+    image:String,
+    geometry : {
+        type: { type: String },
+        coordinates: []
+    }
+});
+var RarePlant = mongoose.model('RarePlant', obsRarePlant, 'RarePlant');
+
+router.post('/form/RarePlant', function(req, res) {
+    console.log(req.body);
+    var newObs = new observation1(req.body);
+    newObs.save(function(err,newobj) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send(newobj);
+        };
+    });
+});
+
+router.get('/form/RarePlant', function(req,res) {
+    observation1.find({}, function(err,docs){
+        res.send(docs);
+    });
+});
+
+router.put('/form/RarePlant/updateItem', function(req, res) {
+    var id = req.body.id, body = req.body;
+    observation1.findByIdAndUpdate(id, body, function(err, docs) {
+        if(err) {
+            res.send(err.message);
+        }
+        else { 
+            res.send("OK");
+        };
+    });
+});

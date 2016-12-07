@@ -90,6 +90,8 @@ function addTempFeature(action) {
         case '5':
             addTempFeature_herd();
             break;
+        case '6':
+            addTempFeature_RarePlant();
     }
     document.getElementById("form").style.display ="block";
     curCoord = null;
@@ -114,6 +116,7 @@ function mapClick(e) {
                                 '<li><a href="#" data-action="4">Wood ressource</a></li>'+
                                 '<li><a href="#" data-action="5">Herd</a></li>'+
                                 '<li><a href="#" data-action="6">Structure</a></li>'+
+                                '<li><a href="#" data-action="7">Rare Plants</a></li>'
                             '</ul>';
 
         el.appendChild(content);
@@ -139,6 +142,10 @@ function mapClick(e) {
                     case 'observation_herd':
                         updateForm_herd(feature);
                     break;
+                    case 'RarePlant':
+                        updateFormRarePlant(feature);
+                    break;
+                    
                 } 
 				document.getElementById("form").style.display ="block";
 				obsLayer = layer;
@@ -208,6 +215,9 @@ function savedata(callback) {
         case 'observation_herd':
             savedataobs_herd(callback);
             break;
+        case 'RarePlant':
+            savedataobsRarePlant(callback);
+        break;
     }  
 }
 
@@ -241,6 +251,9 @@ function addObservations(layer, name, callback) {
         case 'observation_herd':
             addObservations_herd(layer, callback);
             break;
+        case 'RarePlant':
+            addRarePlant(layer,callback);
+        break;
     }
 }
 
@@ -352,6 +365,18 @@ $(document).ready(function(){
     name = "observation_herd"
     layer = new ol.layer.Vector({
         name: "observation_herd",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+
+    addObservations(layer, name, logMessage); 
+    
+        name = "RarePlant"
+    layer = new ol.layer.Vector({
+        name: "RarePlant",
         style: Point_Style,
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),

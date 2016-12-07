@@ -93,6 +93,8 @@ function addTempFeature(action) {
         case '6':
             addTempFeatureStructure();
             break;
+        case '7':
+            addTempFeatureRarePlant();
     }
     document.getElementById("form").style.display ="block";
     curCoord = null;
@@ -117,6 +119,7 @@ function mapClick(e) {
                                 '<li><a href="#" data-action="4">Wood ressource</a></li>'+
                                 '<li><a href="#" data-action="5">Herd</a></li>'+
                                 '<li><a href="#" data-action="6">Structure</a></li>'+
+                                '<li><a href="#" data-action="7">Rare Plants<a></li>'
                             '</ul>';
 
         el.appendChild(content);
@@ -144,6 +147,9 @@ function mapClick(e) {
                     break;
                     case 'observation_structure':
                         updateFormStructure(feature);
+                    break;
+                    case 'RarePlant':
+                        updateFormRarePlant(feature);
                     break;
                 } 
 				document.getElementById("form").style.display ="block";
@@ -217,6 +223,9 @@ function savedata(callback) {
         case 'observation_structure':
             savedataStructure(callback);
             break;
+        case 'RarePlant';
+            savedataobsRarePlant(callback);
+            break;
     }  
 }
 
@@ -252,6 +261,9 @@ function addObservations(layer, name, callback) {
             break;
         case 'observation_structure':
             addObservationsStructure(layer, callback);
+            break;
+        case 'RarePlant':
+            addObservationsRarePlant(layer,callback);
             break;
     }
 }
@@ -360,6 +372,18 @@ $(document).ready(function(){
     map.addLayer(layer); 
  
     addObservations(layer, name, logMessage);  
+    
+        name = "RarePlant"
+    layer = new ol.layer.Vector({
+        name: "RarePlant",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer); 
+ 
+    addObservations(layer, name, logMessage); 
 
     name = "observation_herd"
     layer = new ol.layer.Vector({
