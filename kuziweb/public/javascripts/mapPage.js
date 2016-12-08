@@ -104,6 +104,9 @@ function addTempFeature(action) {
         case '5':
             addTempFeature_herd();
             break;
+        case '6':
+            addTempFeatureStructure();
+            break;
         case '7':
             addTempFeature_RarePlant();
             break;
@@ -167,6 +170,9 @@ function mapClick(e) {
                     break;
 					case 'fire':
                         updateForm_fire(feature);
+                    break;
+                	case 'structure':
+                        updateFormStructure(feature);
                     break;
                 } 
 				document.getElementById("form").style.display ="block";
@@ -243,6 +249,9 @@ function savedata(callback) {
         case 'fire':
             savedata_fire(callback);
         break;
+            case 'structure':
+            savedataStructure(callback);
+        break;
     }  
 }
 
@@ -281,6 +290,9 @@ function addObservations(layer, name, callback) {
         break;
     	case 'fire':
             addObservations_fire(layer,callback);
+        break;
+        case 'structure':
+            addObservationsStructure(layer,callback);
         break;
     }
 }
@@ -415,6 +427,16 @@ $(document).ready(function(){
     name = "fire"
     layer = new ol.layer.Vector({
         name: "fire",
+        style: Point_Style,
+        source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+        })
+    });
+    map.addLayer(layer);
+    
+    name = "structure"
+    layer = new ol.layer.Vector({
+        name: "structure",
         style: Point_Style,
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),
