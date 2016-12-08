@@ -27,18 +27,67 @@
         <div id="map" class="map">
         </div>
 
-        <button id="addButton">Add</button>
-        <button id="modButton">Modifiy</button>      
+     
 
         <div id="legend">
-            <input id="legend-buildings" class="toggleButton" type="checkbox" />
-            <label for="legend-buildings" ></label>
-            <input id="legend-roads" class="toggleButton" type="checkbox" />
-            <label for="legend-roads" ></label>
-            <input id="legend-fences" class="toggleButton" type="checkbox" />
-            <label for="legend-fences" ></label>
+            <br>
+            <br>
+            <ul>
+                <li>
+                  <div id="layer0">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Bing Aerial
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+                <li>
+                  <div id="layer1">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Open Street Map
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+                <li>
+                  <div id="layer2">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Buildings
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+                <li>
+                    <div id="layer3">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Fences
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+                <li>
+                  <div id="layer4">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Roads
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+                <li>
+                  <div id="layer5">
+                    <label class="checkbox" for="visible0">
+                      <input id="visible0" class="visible" type="checkbox"/>Observations 1
+                    </label>
+                    <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+                  </div>
+                </li>
+            </ul>
         </div>
 
+        <button id="legendSwitch" onclick="switchLegend(event)"></button> 
+        <button id="addButton">Add</button>
+        <button id="modButton">Modifiy</button> 
+        
         <div id="form">
             <div id="IDc" class="container">
                 <label>ID</label>

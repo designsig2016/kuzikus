@@ -36,6 +36,16 @@ var Point_Style = new ol.style.Style({
 });
 
 
+function switchLegend(event) {
+    var legend = document.getElementById("legend");
+    if(legend.style.visibility == "collapse") {
+        legend.style.visibility = "visible";
+    }
+    else {
+        legend.style.visibility = "collapse";
+    }
+}
+
 // affiche une image du fichier image sélectionné dans le tag imgElement
 function onFileSelected(event) {
     var selectedFile = event.target.files[0];
@@ -424,6 +434,8 @@ $(document).ready(function(){
     document.getElementById("cancelBtn").onclick = cancelform;
     document.getElementById("saveBtn").onclick = function() {saveform(onsaved)};
 
+    document.getElementById("legend").style.visibility = "collapse";    
+
 
 
     // Ajout du popup
@@ -439,4 +451,32 @@ $(document).ready(function(){
     }, false);
 
 
-});
+
+    map.getLayers().forEach(function(layer, i) {
+        bindInputs('#layer' + i, layer);
+        if (layer instanceof ol.layer.Group) {
+            layer.getLayers().forEach(function(sublayer, j) {
+                bindInputs('#layer' + i + j, sublayer);
+            });
+        }
+    });
+
+    $('#layertree li > span').click(function() {
+        $(this).siblings('fieldset').toggle();
+    }).siblings('fieldset').hide();
+
+}); 
+
+function bindInputs(layerid, layer) {
+    var visibilityInput = $(layerid + ' input.visible');
+    visibilityInput.on('change', function() {
+        layer.setVisible(this.checked);
+    });
+    visibilityInput.prop('checked', layer.getVisible());
+
+    var opacityInput = $(layerid + ' input.opacity');
+    opacityInput.on('input change', function() {
+        layer.setOpacity(parseFloat(this.value));
+    });
+    opacityInput.val(String(layer.getOpacity()));
+}
